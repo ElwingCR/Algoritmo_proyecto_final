@@ -7803,20 +7803,25 @@ a.anchor-link {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1>Algoritmos de optimización - Seminario<br/></h1>
-<p>Nombre y Apellidos:   <br/>
-Url: <a href="https://github.com/.../03MAIR---Algoritmos-de-Optimizacion---2019/tree/master/SEMINARIO">https://github.com/.../03MAIR---Algoritmos-de-Optimizacion---2019/tree/master/SEMINARIO</a><br/>
+<p>Nombre y Apellidos:
+Fabio Antonio Rodriguez Quesada <br/>
+Brand Orion Quispe Loaiza <br/>
+Url: <a href="https://github.com/ElwingCR/Algoritmo_proyecto_final">https://github.com/ElwingCR/Algoritmo_proyecto_final</a><br/>
 Problema:</p>
 <blockquote>
 <ol>
 <li>Sesiones de doblaje <br/></li>
-<li>Organizar los horarios de partidos de La Liga<br/></li>
-<li>Combinar cifras y operaciones</li>
 </ol>
 </blockquote>
 <p>Descripción del problema:(copiar enunciado)</p>
 <blockquote>
 <ol>
-<li>Sesiones de doblaje <br/></li>
+<li>Se precisa coordinar el doblaje de una película. Los actores del doblaje deben coincidir en las
+tomas en las que sus personajes aparecen juntos en las diferentes tomas. Los actores de
+doblaje cobran todos la misma cantidad por cada día que deben desplazarse hasta el estudio de
+grabación independientemente del número de tomas que se graben. No es posible grabar más
+de 6 tomas por día. El objetivo es planificar las sesiones por día de manera que el gasto por los
+servicios de los actores de doblaje sea el menor posible. <br/></li>
 </ol>
 </blockquote>
 <p>(*) La respuesta es obligatoria</p>
@@ -7865,9 +7870,9 @@ Problema:</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <blockquote>
-<p>Las posibilidades sin tener en cuenta las restricciones seria:
+<p>Suponiendo que la planificación se realiza en 5 días, cada una de las 30 tomas puede asignarse independientemente a cualquiera de ellos. Por tanto, el número de asignaciones posibles, sin considerar la restricción de un máximo de 6 tomas por día, es:
 $$5^{30} = 931322574615478515625 $$</p>
-<p>Las posibilidades tomando en cuenta las restricciones seria:
+<p>Las posibilidades tomando en cuenta las restricciones seria: Eliminando las permutaciones similares en cada dia, asi como entre dias. Agrupando 30 tomas en 5 grupos de 6 tomas.
 $$\frac{30!}{6^5 * 5!} = 58905214586600$$</p>
 </blockquote>
 </div>
@@ -7904,7 +7909,7 @@ $$\frac{30!}{6^5 * 5!} = 58905214586600$$</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <blockquote>
-<p>La estructura es una matriz binaria, esta permite el acceso a la infomacion de forma sencilla O(1), ademas como los valores son representados con 1 y 0 es de bajo costo computacional (1 si participa o 0 si no participa en la escena).</p>
+<p>La estructura es una matriz binaria, esta permite el acceso a la infomacion de forma sencilla O(1), ademas como los valores son representados con 1 y 0 es de bajo costo computacional (1 si participa o 0 si no participa en la escena). Ademas que permite identificar más rapido los actores que participaran en cada día.</p>
 </blockquote>
 </div>
 </div>
@@ -7942,7 +7947,8 @@ $$\frac{30!}{6^5 * 5!} = 58905214586600$$</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <blockquote>
 <p>La funcion objetivo seria
-$$\min \sum_{d} \sum_{a} y_{a,d}$$</p>
+$$\min \sum_{d} \sum_{a} y_{a,d}$$
+Tomando la consideracion que cada uno de los actores de doblaje cobra independientemente del numero de tomas hechas en un día, la función busca minimizar el total de asistencias.</p>
 </blockquote>
 </div>
 </div>
@@ -8055,6 +8061,9 @@ $$\min \sum_{d} \sum_{a} y_{a,d}$$</p>
     <span class="c1"># PODA: Si el costo que llevamos ya supera al mejor, no seguimos por aquí, si quita este if se realiza una busqueda completa</span>
     <span class="k">if</span> <span class="n">costo_actual</span> <span class="o">&gt;=</span> <span class="n">menor_costo_global</span><span class="p">:</span>
         <span class="k">return</span>
+        <span class="c1"># Aca se esta podando, entonces ya no seria fuerza bruta, con esta poda se esta evitando continuar explorando las ramas</span>
+        <span class="c1"># con un costo que ya supera a la mejor solucion.</span>
+        <span class="c1"># Por otro lado, si bien esto reduce el tiempo de ejecución, en el peor de los casos sigue siendo exponencial.</span>
 
     <span class="c1"># CASO BASE: Si ya no hay más tomas que asignar</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">tomas_disponibles</span><span class="p">:</span>
@@ -8138,7 +8147,13 @@ $$\min \sum_{d} \sum_{a} y_{a,d}$$</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <blockquote>
-<p>La complejidad por fuerza bruta seria de: $$O(c^n)$$</p>
+<p>La complejidad por fuerza bruta seria de: $$O(c^n)$$
+Ya que el algoritmo realiza una busqueda de todas las posibles asignaciones de las tomas, las combinaciones crecen exponencialmente, con el número de tomas y complejudad en el peor de los casos es exponencial.</p>
+</blockquote>
+<blockquote>
+<p>Donde:</p>
+<p>c = número de días
+n = número de tomas</p>
 </blockquote>
 </div>
 </div>
@@ -8683,6 +8698,7 @@ Costo total: 34
 <p>Con este problema vemos que a medida que aumenta el número de tomas y actores, el problema crece de forma combinatoria, haciendo muy difícil o inviable explorar todas las soluciones posibles mediante búsqueda exhaustiva. Por lo que, una forma de trabajar este problema es desarrollar algoritmos más eficientes, como metaheurísticas (búsqueda local, recocido simulado, búsqueda tabú o algoritmos genéticos) que permitan obtener soluciones de buena calidad en tiempos razonables para instancias de mayor tamaño.</p>
 <p>Para este trabajo utilice una búsqueda local Hill Climbing con Random Restart, ya que permite tener soluciones buenas en un tiempo aceptable, sin la necesidad de explorar todo el espacio de soluciones. Con el uso del reinicio aleatorio, intentamos solucionar el problema de la búsqueda local, que puede quedar atrapado en los óptimos locales. Con esto tenemos más probabilidades de obtener una mejor respuesta.</p>
 <p>En el problema podríamos incrementar la dificultad incluyendo más restricciones de un proyecto real. Ejemplo: disponibilidad de los actores para días específicos, duración de las sesiones o que algunas tomas tengan que realizarse antes que otras. Todo esto haría que el problema fuera más real y por consiguiente aumente su complejidad.</p>
+<p>Para mejorar la efectividad de la poda y mejorar el tiempo de ejecucion se podría ordenar las tomas, priorizando las tomas con mayor numero de actores de doblaje primero.</p>
 <p>Finalmente, para instancias de gran tamaño, podría estudiarse el comportamiento del algoritmo al aumentar considerablemente el tamaño del problema, así como el uso de procesamiento paralelo. También sería interesante comparar Hill Climbing con otras metaheurísticas, como Simulated Annealing, Tabu Search o Algoritmos Genéticos, para determinar cuál ofrece el mejor equilibrio entre calidad de la solución y tiempo de cálculo.</p>
 <p>Finalmente, también podría investigarse el desarrollo de algoritmos híbridos, utilizando Hill Climbing con Random Restart para obtener una solución inicial que posteriormente sea refinada mediante métodos exactos o por otras metaheurísticas, con el objetivo de mejorar aún más la calidad de la planificación.</p>
 </blockquote>
