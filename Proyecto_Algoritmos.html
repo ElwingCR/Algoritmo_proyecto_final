@@ -7873,7 +7873,42 @@ servicios de los actores de doblaje sea el menor posible. <br/></li>
 <p>Suponiendo que la planificación se realiza en 5 días, cada una de las 30 tomas puede asignarse independientemente a cualquiera de ellos. Por tanto, el número de asignaciones posibles, sin considerar la restricción de un máximo de 6 tomas por día, es:
 $$5^{30} = 931322574615478515625 $$</p>
 <p>Las posibilidades tomando en cuenta las restricciones seria: Eliminando las permutaciones similares en cada dia, asi como entre dias. Agrupando 30 tomas en 5 grupos de 6 tomas.
-$$\frac{30!}{6^5 * 5!} = 58905214586600$$</p>
+$$
+\binom{30}{6}
+$$</p>
+<p>Luego con las 24 tomas que quedan, se tomas las sigueintes 6 tomas:</p>
+<p>$$
+\binom{24}{6}
+$$</p>
+<p>Y asi con las demas tomas.</p>
+<p>$$
+\binom{18}{6},
+\quad
+\binom{12}{6},
+\quad
+\binom{6}{6}
+$$</p>
+<p>Multiplicamos todas estas combinaciones que hicimos y se tiene:</p>
+<p>$$
+\binom{30}{6}
+\binom{24}{6}
+\binom{18}{6}
+\binom{12}{6}
+\binom{6}{6}
+=
+\frac{30!}{(6!)^5}
+$$</p>
+<p>Pero los cinco grupos tienen las etiquetados (primer día, segundo día, etc.). Como en el conteo combinatorio esos grupos no hay diferencia, dividimos entre</p>
+<p>$$
+5!
+$$</p>
+<p>Logrando:</p>
+<p>$$
+\boxed{
+\frac{30!}{(6!)^5\,5!}
+}
+$$
+$$\frac{30!}{(6!)^5 * 5!} = 11423951396577720$$</p>
 </blockquote>
 </div>
 </div>
@@ -7948,7 +7983,8 @@ $$\frac{30!}{6^5 * 5!} = 58905214586600$$</p>
 <blockquote>
 <p>La funcion objetivo seria
 $$\min \sum_{d} \sum_{a} y_{a,d}$$
-Tomando la consideracion que cada uno de los actores de doblaje cobra independientemente del numero de tomas hechas en un día, la función busca minimizar el total de asistencias.</p>
+Donde $y_{a} = 1$  si el actor de doblaje A trabaja el dia d y 0 en caso no.</p>
+<p>Tomando la consideracion que cada uno de los actores de doblaje cobra independientemente del numero de tomas hechas en un día, la función busca minimizar el total de asistencias.</p>
 </blockquote>
 </div>
 </div>
@@ -7958,7 +7994,7 @@ Tomando la consideracion que cada uno de los actores de doblaje cobra independie
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
@@ -8057,13 +8093,6 @@ Tomando la consideracion que cada uno de los actores de doblaje cobra independie
 <span class="k">def</span><span class="w"> </span><span class="nf">fuerza_bruta_doblaje</span><span class="p">(</span><span class="n">tomas_disponibles</span><span class="p">,</span> <span class="n">planificacion_actual</span><span class="p">,</span> <span class="n">costo_actual</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Algoritmo recursivo que busca la combinación óptima."""</span>
     <span class="k">global</span> <span class="n">menor_costo_global</span><span class="p">,</span> <span class="n">mejor_planificacion</span>
-
-    <span class="c1"># PODA: Si el costo que llevamos ya supera al mejor, no seguimos por aquí, si quita este if se realiza una busqueda completa</span>
-    <span class="k">if</span> <span class="n">costo_actual</span> <span class="o">&gt;=</span> <span class="n">menor_costo_global</span><span class="p">:</span>
-        <span class="k">return</span>
-        <span class="c1"># Aca se esta podando, entonces ya no seria fuerza bruta, con esta poda se esta evitando continuar explorando las ramas</span>
-        <span class="c1"># con un costo que ya supera a la mejor solucion.</span>
-        <span class="c1"># Por otro lado, si bien esto reduce el tiempo de ejecución, en el peor de los casos sigue siendo exponencial.</span>
 
     <span class="c1"># CASO BASE: Si ya no hay más tomas que asignar</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">tomas_disponibles</span><span class="p">:</span>
